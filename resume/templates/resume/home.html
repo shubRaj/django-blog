@@ -1,0 +1,138 @@
+{% extends 'resume/base.html' %}
+{% block content %}
+<div class="container-fluid p-0">
+    <!-- About-->
+    <section class="resume-section" id="about">
+        <div class="resume-section-content">
+            <h1 class="mb-0">
+                {{whois.first_name}}
+                <span class="text-primary">{{whois.last_name}}</span>
+            </h1>
+            <div class="subheading mb-5">
+                {% if whois.profile.address%}
+                {{whois.profile.address}}.
+                {% endif %}
+                {% if whois.profile.contact_num and whois.profile.show_num %}
+                    {{whois.profile.contact_num}} ·
+                {% elif whois.profile.contact_num and not whois.profile.show_num %}
+                    {{whois.profile.contact_num |truncatechars:"6"}}
+                {% endif %}
+                {{whois.email|urlize}}
+            </div>
+            <p class="lead mb-5">{{whois.profile.bio}}</p>
+            <div class="social-icons">
+                {% for social in whois.profile_social.all %}
+                    <a class="social-icon" href="{{social.url}}" target="_blank"><i class="fab fa-{{social.platform}}"></i></a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!-- Experience-->
+    {% if whois.profile_experience.all %}
+        <hr class="m-0" />
+        <section class="resume-section" id="experience">
+            <div class="resume-section-content">
+                <h2 class="mb-5">Experience</h2>
+                <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                    {% for experience in whois.profile_experience.all %}
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">{{experience.position}}</h3>
+                            <div class="subheading mb-3">{{experience.organization}}</div>
+                            <p>{{experience.description}}</p>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary">{{experience.start_date|date:"F Y"}} - 
+                            {% if not experience.end_date %}
+                            Present
+                            {% else %}
+                            {{experience.end_date | date:"F Y"}}
+                            {% endif %}</span>
+                        </div>
+                    {% endfor  %}
+                </div>
+            </div>
+        </section>
+    {% endif %}
+    <!-- Education-->
+    {% if whois.profile_education.all %}
+        <hr class="m-0" />
+        <section class="resume-section" id="education">
+            <div class="resume-section-content">
+                <h2 class="mb-5">Education</h2>
+                {% for education in whois.profile_education.all %}
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">{{education.organization}}</h3>
+                            <div class="subheading mb-3">{{education.faculty}}</div>
+                            <div>{{education.description}}</div>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary">{{education.start_date|date:"F Y"}} - 
+                            {% if education.end_date %}
+                            {{education.end_date|date:"F Y"}}
+                            {% else %}
+                            Present
+                            {% endif %}
+                        </span></div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
+    <!-- Skills-->
+    {% if whois.profile_skill or whois.profile_workflow %}
+        <hr class="m-0" />
+        <section class="resume-section" id="skills">
+            <div class="resume-section-content">
+                {% if whois.profile_skill.all %}
+                    <h2 class="mb-5">Skills</h2>
+                    <div class="subheading mb-3">Programming Languages & Tools</div>
+                    <ul class="list-inline dev-icons">
+                        {% for skill in whois.profile_skill.all %}
+                            {% if not skill.language_tool|lower == "python" %}
+                                <li class="list-inline-item"><i class="fab fa-{{skill.language_tool | lower}}"></i></li>
+                            {% else %}
+                                <li class="list-inline-item"><i class="fab fa-{{skill.language_tool | lower}} fa-spin"></i></li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {% if whois.profile_workflow.all %}
+                    <div class="subheading mb-3">Workflow</div>
+                    <ul class="fa-ul mb-0">
+                        {% for workflow in whois.profile_workflow.all %}
+                        <li>
+                            <span class="fa-li"><i class="fas fa-check"></i></span>
+                            {{workflow.workflow}}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </section>
+    {% endif %}
+    <!-- Interests-->
+    {% if whois.profile_interest.all %}
+        <hr class="m-0" />
+        <section class="resume-section" id="interests">
+            <div class="resume-section-content">
+                <h2 class="mb-5">Interests</h2>
+                {% for interest in whois.profile_interest.all %}
+                <p class="mb-0">{{interest.description}}</p>
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
+    <!-- <hr class="m-0" /> -->
+    <!-- Awards-->
+    <!-- <section class="resume-section" id="awards">
+        <div class="resume-section-content">
+            <h2 class="mb-5">Awards & Certifications</h2>
+            <ul class="fa-ul mb-0">
+                <li>
+                    <span class="fa-li"><i class="fas fa-trophy text-warning"></i></span>
+                    Google Analytics Certified Developer
+                </li>
+            </ul>
+        </div>
+    </section> -->
+</div>
+{% endblock content %}
