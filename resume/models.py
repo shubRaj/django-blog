@@ -43,7 +43,7 @@ def resize_image(image_src):
         img.save(Path(image_src).resolve().parent/imgname)
 class Profile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
-    profile_pic = models.ImageField(default="profile_pics/default.jpg",upload_to="profile_pics")
+    profile_pic = models.ImageField(default="profile_pics/default.png",upload_to="profile_pics")
     gender = models.CharField(max_length=6,choices=GENDER_CHOICES,default="male")
     bio = models.TextField(blank=True)
     address = models.CharField(max_length=100,blank=True,null=True)

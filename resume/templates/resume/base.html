@@ -4,8 +4,8 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
+        <meta name="description" content="{{whois.profile.bio}}" />
+        <meta name="author" content="{{whois.get_full_name}}" />
         <title>Resume - {{whois.get_full_name}}</title>
         <link rel="icon" type="image/x-icon" href="{{favicon}}" />
         <!-- Font Awesome icons (free version)-->
@@ -43,6 +43,11 @@
                 </ul>
             </div>
         </nav>
+        {% for message in messages %}
+        <div class="text-center alert alert-{{message.level_tag}}" role="alert">
+            {{message.message}}
+        </div>
+        {% endfor %}
         {% block content %}
         {% endblock content %}
         <!-- Bootstrap core JS-->
