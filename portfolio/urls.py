@@ -19,6 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
     path('logmein/', admin.site.urls),
+    path("dashboard/",include("dashboard.urls",namespace="dashboard")),
     path("",include('resume.urls',namespace="resume")),
 ]
 if settings.DEBUG:

@@ -1,0 +1,32 @@
+{% extends 'dashboard/base.html' %}
+{% block bodyAttr %}
+    class="bg-gradient-primary"
+{% endblock bodyAttr %}
+{% block content %}
+<div class="container">
+
+    <div class="card o-hidden border-0 shadow-lg my-5">
+      <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+          <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+          <div class="col-lg-7">
+            <div class="p-5">
+            <div class="text-center">
+                <p class="large" >Logged out</p>
+            </div>
+            <div class="text-center">
+                <p class="small">Thanks for spending some quality time with the Web site today.</p>
+              </div>
+              <div class="text-center">
+                <a class="large" href="{% url 'app_dashboard:dashboard_login' %}">Login Again !</a>
+                <a class="large" href="{% url 'app_resume:resume_home' '/' %}">Return Home</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+{% endblock content %}
