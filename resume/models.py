@@ -34,16 +34,17 @@ SOCIAL_MEDIA_CHOICES = (
     ("twitter","TWITTER"),
     ("website","WEBSITE")
 )
-def resize_image(image_src):
-    img = Image.open(image_src)
-    if img.width > 500 or img.height >500:
-        img.thumbnail((500,500))
-        img.thumbnail((16,16))
-        imgname = "favicon"+image_src.split("/")[-1]
-        img.save(Path(image_src).resolve().parent/imgname)
+def resize_image(image_src,image_size):
+    org_img = Image.open(image_src)
+    if org_img.width > image_size[0] or org_img.height >image_size[1]:
+        org_img.thumbnail((image_size[0],image_size[1]))
+        org_img.save(image_src)
+    
 class Profile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
-    profile_pic = models.ImageField(default="profile_pics/default.png",upload_to="profile_pics")
+    resume_pic = models.ImageField(default="profile_pics/default.png",upload_to="profile_pics")
+    profile_pic = models.ImageField(default="profile_pics/profiledefault.png",upload_to="profile_pics")
+    favicon = models.ImageField(default="profile_pics/favicondefault.png",upload_to="profile_pics")
     gender = models.CharField(max_length=6,choices=GENDER_CHOICES,default="male")
     bio = models.TextField(blank=True)
     address = models.CharField(max_length=100,blank=True,null=True)
@@ -52,7 +53,11 @@ class Profile(models.Model):
     def save(self,*args, **kwargs):
         super().save(*args,**kwargs)
         if not (self._meta.get_field("profile_pic").default in self.profile_pic.path):
-            resize_image(self.profile_pic.path)
+            resize_image(self.profile_pic.path,(60,60))
+        if not (self._meta.get_field("resume_pic").default in self.resume_pic.path):
+            resize_image(self.resume_pic.path,(500,500))
+        if not (self._meta.get_field("favicon").default in self.favicon.path):
+            resize_image(self.favicon.path,(16,16))
 class SocialMedia(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="profile_social")
     platform = models.CharField(choices=SOCIAL_MEDIA_CHOICES,max_length=9,default="facebook")

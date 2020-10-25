@@ -11,7 +11,4 @@ class ResumeHomeView(View):
             whois = User.objects.get(username=user_name)
         except User.DoesNotExist:
             whois = User.objects.all().first()
-        favicon = whois.profile.profile_pic.url.split("/")
-        favicon[-1]="favicon"+favicon[-1]
-        favicon = "/".join(favicon)
-        return render(request,self.template_name,{"whois":whois,"favicon":favicon,})
+        return render(request,self.template_name,{"whois":whois})
