@@ -47,6 +47,7 @@ class Profile(models.Model):
     favicon = models.ImageField(default="profile_pics/favicondefault.png",upload_to="profile_pics")
     gender = models.CharField(max_length=6,choices=GENDER_CHOICES,default="male")
     bio = models.TextField(blank=True)
+    profession = models.CharField(max_length=50,null=True,blank=True)
     address = models.CharField(max_length=100,blank=True,null=True)
     contact_num = models.CharField(max_length=17,validators=[validate_num,])
     show_num = models.BooleanField(default=False)
@@ -64,6 +65,14 @@ class SocialMedia(models.Model):
     url = models.URLField()
     def __str__(self):
         return f"{self.user}'s {self.platform}"
+    def save(self,*args, **kwargs):
+        if self.platform !="website":
+            if not self.url.endswith("/"):
+                self.url = self.url.split("/")[-1]
+            else:
+                print(self.url)
+                self.url = self.url.split("/")[-2]
+        super().save(*args,**kwargs)
     class Meta:
         verbose_name_plural = "Social Media"
 class AbsModel(models.Model):

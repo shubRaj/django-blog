@@ -22,7 +22,11 @@
             <p class="lead mb-5">{{whois.profile.bio}}</p>
             <div class="social-icons">
                 {% for social in whois.profile_social.all %}
-                    <a class="social-icon" href="{{social.url}}" target="_blank"><i class="fab fa-{{social.platform}}"></i></a>
+                    {% if social.platform == "website" %}
+                    <a class="social-icon" href="{{social.url}}" target="_blank"><i class="fas fa-globe"></i></a>
+                    {% else %}
+                    <a class="social-icon" href="https://{{social.platform}}.com/{{social.url}}" target="_blank"><i class="fab fa-{{social.platform}}"></i></a>
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>
