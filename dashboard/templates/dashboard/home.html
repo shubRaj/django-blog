@@ -249,7 +249,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Update Your Information</h5>
-        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+        <button class="close close-btn" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
       </div>
@@ -291,7 +291,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Update Your Information</h5>
-        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+        <button class="close close-btn" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
       </div>
@@ -310,51 +310,27 @@
             </div>
           </div>
           <div class="form-group">
-            {% for error in userForm.username.errors %}
-                <div class="alert alert-danger">{{ error }}</div>
-            {% endfor %}
             {% render_field userForm.username class="form-control form-control-user" placeholder="Username" %}
           </div>
           <div class="form-group">
-            {% for error in userForm.email.errors %}
-                <div class="alert alert-danger">{{ error }}</div>
-            {% endfor %}
             {% render_field userForm.email class="form-control form-control-user" placeholder="Email.." %}
           </div>
           <div class="form-group">
-            {% for error in profileForm.profession.errors %}
-                <div class="alert alert-danger">{{ error }}</div>
-            {% endfor %}
             {% render_field profileForm.profession class="form-control form-control-user" placeholder="Profession..." %}
           </div>
           <div class="form-group">
-            {% for error in profileForm.gender.errors %}
-                <div class="alert alert-danger">{{ error }}</div>
-            {% endfor %}
             {% render_field profileForm.gender class="form-control" id="exampleFormControlSelect1" %}
           </div>
           <div class="form-group">
-            {% for error in profileForm.bio.errors %}
-                <div class="alert alert-danger">{{ error }}</div>
-            {% endfor %}
             {% render_field profileForm.bio class="form-control" id="exampleFormControlTextarea1" placeholder="Bio..." %}
           </div>
           <div class="form-group">
-            {% for error in profileForm.address.errors %}
-                <div class="alert alert-danger">{{ error }}</div>
-            {% endfor %}
             {% render_field profileForm.address class="form-control form-control-user" placeholder="Address..." %}
           </div>
           <div class="form-group">
-            {% for error in profileForm.contact_num.errors %}
-                <div class="alert alert-danger">{{ error }}</div>
-            {% endfor %}
             {% render_field profileForm.contact_num class="form-control form-control-user" placeholder="Contact Number" %}
           </div>
           <div class="form-check">
-            {% for error in profileForm.show_num.errors %}
-                <div class="alert alert-danger">{{ error }}</div>
-            {% endfor %}
             {% render_field profileForm.show_num class="form-check-input"  %}
             <label class="form-check-label" for="exampleCheck1">Show my number in Portfolio</label>
           </div>
@@ -371,7 +347,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Update Your Information</h5>
-        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+        <button class="close close-btn" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
       </div>
@@ -384,8 +360,10 @@
                   <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe mr-2 icon-inline"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>Website</h6>
                   <span class="text-secondary cross">{{social.url}}
                     <i class="fa fa-times d-none" aria-hidden="true"></i>
-                      <form method="post" class="deleteForm" action="{% url 'app_dashboard:dashboard_deleteSocial' social.id %}">
+                      <form method="post" class="deleteForm" action="{% url 'app_dashboard:dashboard_home' %}">
                         {% csrf_token %}
+                        <input type="hidden" name="pk" value="{{social.id}}">
+                        <input type="hidden" name="action" value="social">
                       <button type="submit" value="DELETE" class="d-none delete">Delete</button>
                       </form>
                   </span>
@@ -395,7 +373,7 @@
                   <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github mr-2 icon-inline"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>Github</h6>
                   <span class="text-secondary cross">{{social.url}}
                     <i class="fa fa-times d-none" aria-hidden="true"></i>
-                    <form method="post" class="deleteForm" action="{% url 'app_dashboard:dashboard_deleteSocial' social.id %}">
+                    <form method="post" class="deleteForm" action="{% url 'app_dashboard:dashboard_home' 'social' social.id %}">
                       {% csrf_token %}
                     <button type="submit" value="DELETE" class="d-none delete"></button>
                     </form>
@@ -406,8 +384,10 @@
                   <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter mr-2 icon-inline text-info"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>Twitter</h6>
                   <span class="text-secondary cross">{{social.url}}
                     <i class="fa fa-times d-none" aria-hidden="true"></i>
-                    <form method="post" class="deleteForm" action="{% url 'app_dashboard:dashboard_deleteSocial' social.id %}">
+                    <form method="post" class="deleteForm" action="{% url 'app_dashboard:dashboard_home'%}">
                       {% csrf_token %}
+                      <input type="hidden" name="pk" value="{{social.id}}">
+                      <input type="hidden" name="action" value="social">
                     <button type="submit" value="DELETE" class="d-none delete">Delete</button>
                     </form>
                   </span>
@@ -417,9 +397,11 @@
                   <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram mr-2 icon-inline text-danger"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>Instagram</h6>
                   <span class="text-secondary cross">{{social.url}}
                     <i class="fa fa-times d-none" aria-hidden="true"></i>
-                    <form method="post" class="deleteForm" action="{% url 'app_dashboard:dashboard_deleteSocial' social.id %}">
+                    <form method="post" class="deleteForm" action="{% url 'app_dashboard:dashboard_home'%}">
                       {% csrf_token %}
-                    <button type="submit" value="DELETE" class="d-none delete"></button>
+                      <input type="hidden" name="pk" value="{{social.id}}">
+                      <input type="hidden" name="action" value="social">
+                    <button type="submit" value="DELETE" class="d-none delete">Delete</button>
                     </form>
                   </span>
               </li>
@@ -428,8 +410,10 @@
                   <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook mr-2 icon-inline text-primary"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>Facebook</h6>
                   <span class="text-secondary cross">{{social.url}}
                     <i class="fa fa-times d-none" aria-hidden="true"></i>
-                    <form method="post" class="deleteForm" action="{% url 'app_dashboard:dashboard_deleteSocial' social.id %}">
+                    <form method="post" class="deleteForm" action="{% url 'app_dashboard:dashboard_home'%}">
                       {% csrf_token %}
+                      <input type="hidden" name="pk" value="{{social.id}}">
+                      <input type="hidden" name="action" value="social">
                     <button type="submit" value="DELETE" class="d-none delete">Delete</button>
                     </form>
                   </span>
@@ -452,7 +436,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Update Your Information</h5>
-        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+        <button class="close close-btn" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
       </div>
@@ -475,6 +459,251 @@
 </div>
 
 <!--End Social-->
+<!--Experience Modal -->
+<div class="modal fade" id="experiencesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Your Information</h5>
+        <button class="close close-btn" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {% for experience in user.profile_experience.all %}
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h5 class="m-0 font-weight-bold text-primary">{{experience.organization}} - {{experience.position}}
+                <form method="post" action="{% url 'app_dashboard:dashboard_home' %}">
+                  {% csrf_token %}
+                  <button  type="submit" class="close" value="DELETE">
+                    <span aria-hidden="true" >×</span>
+                  </button>
+                  <input type="hidden" name="pk" value="{{experience.id}}">
+                  <input type="hidden" name="action" value="experience">
+                </form>
+              </h5>
+              <h6 class="m-0 font-weight-bold text-dark">{{experience.start_date|date:'jS M,Y'}} - {% if experience.end_date %}{{experience.end_date|date:'jS M,Y'}}{% else %}Present{% endif %}</h6>
+            </div>
+            <div class="card-body">
+              <p class="mb-0">{{experience.description}}</p>
+            </div>
+        </div>
+        {% endfor %}
+        <button class="btn btn-primary btn-user btn-block formEdit" data-toggle="modal" data-target="#addExperience">Add New</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End Experience Modal-->
+<!--Add Experience-->
+<div class="modal fade" id="addExperience" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Your Information</h5>
+        <button class="close close-btn" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{% url 'app_dashboard:dashboard_home' %}">
+          {% csrf_token %}
+          <div class="form-group row">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              {% render_field experienceForm.organization class="form-control form-control-user" placeholder="Organization or Institution" %}
+            </div>
+            <div class="col-sm-6">
+              {% render_field experienceForm.position class="form-control form-control-user" placeholder="Position" %}
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              {% render_field experienceForm.start_date class="form-control form-control-user" placeholder="Join:YYYY-MM-DD" %}
+            </div>
+            <div class="col-sm-6">
+              {% render_field experienceForm.end_date class="form-control form-control-user" placeholder="Left:YYYY-MM-DD" %}
+            </div>
+          </div>
+          <div class="form-group">
+            {% render_field experienceForm.description class="form-control form-control-user" placeholder="description" %}
+          </div>
+          <button type="submit" class="btn btn-primary btn-user btn-block">Add</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End Experience-->
+<!--Education Modal-->
+<div class="modal fade" id="educationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Your Information</h5>
+        <button class="close close-btn" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {% for education in user.profile_education.all %}
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h5 class="m-0 font-weight-bold text-primary">{{education.organization}} - {{education.faculty}}
+                <form method="post" action="{% url 'app_dashboard:dashboard_home' %}">
+                  {% csrf_token %}
+                  <button  type="submit" class="close" value="DELETE">
+                    <span aria-hidden="true" >×</span>
+                  </button>
+                  <input type="hidden" name="pk" value="{{education.id}}">
+                  <input type="hidden" name="action" value="education">
+                </form>
+              </h5>
+              <h6 class="m-0 font-weight-bold text-dark">{{education.start_date|date:'jS M,Y'}} - {% if education.end_date %}{{education.end_date|date:'jS M,Y'}}{% else %}Present{% endif %}</h6>
+            </div>
+            <div class="card-body">
+              <p class="mb-0">{{education.description}}</p>
+            </div>
+        </div>
+        {% endfor %}
+        <button class="btn btn-primary btn-user btn-block formEdit" data-toggle="modal" data-target="#addEducation">Add New</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End Education Modal-->
+<!--Add Education-->
+<div class="modal fade" id="addEducation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Your Information</h5>
+        <button class="close close-btn" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{% url 'app_dashboard:dashboard_home' %}">
+          {% csrf_token %}
+          <div class="form-group row">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              {% render_field educationForm.organization class="form-control form-control-user" placeholder="Organization or Institution" %}
+            </div>
+            <div class="col-sm-6">
+              {% render_field educationForm.faculty class="form-control form-control-user" placeholder="Faculty" %}
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              {% render_field educationForm.start_date class="form-control form-control-user" placeholder="Join:YYYY-MM-DD" %}
+            </div>
+            <div class="col-sm-6">
+              {% render_field educationForm.end_date class="form-control form-control-user" placeholder="Left:YYYY-MM-DD" %}
+            </div>
+          </div>
+          <div class="form-group">
+            {% render_field educationForm.description class="form-control form-control-user" placeholder="description" %}
+          </div>
+          <button type="submit" class="btn btn-primary btn-user btn-block">Add</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End Education-->
+<!--Start Skill model-->
+<div class="modal fade" id="skillsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Your Information</h5>
+        <button class="close close-btn" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          {% for skill in user.profile_skill.all %}
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{skill.language_tool}}</div>
+                  </div>
+                  <div class="col-auto">
+                    <i class="fab fa-{{skill.language_tool | lower}} fa-2x text-gray-800"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <button class="btn btn-primary btn-user btn-block formEdit" data-toggle="modal" data-target="#addSkill">Add New</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Skill model-->
+<!--Add Skill-->
+<div class="modal fade" id="addSkill" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Your Information</h5>
+        <button class="close close-btn" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form method="post" action="{% url 'app_dashboard:dashboard_home' %}" >
+            {% csrf_token %}
+            <div class="form-group">
+              {% render_field skillForm.language_tool  class="form-control form-control-user" placeholder="Tools/Programming Language"%}
+            </div>
+            <button type="submit" class="btn btn-primary btn-user btn-block">Add</button>
+          </form>  
+      </div>
+    </div>
+  </div>
+</div>
+<!--End Skill-->
+<!--Add WorkFlow Model -->
+<div class="modal fade" id="workflowsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Your Information</h5>
+        <button class="close close-btn" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {% for workflow in user.profile_workflow.all %}
+        <div class="card shadow mb-4">
+            {% csrf_token %}
+            <div class="card-body">
+              <p class="mb-0">{{workflow.workflow}}
+                <form method="post" action="{% url 'app_dashboard:dashboard_home' %}">
+                  {% csrf_token %}
+                  <button  type="submit" class="close" value="DELETE">
+                    <span aria-hidden="true" >×</span>
+                  </button>
+                  <input type="hidden" name="pk" value="{{workflow.id}}">
+                  <input type="hidden" name="action" value="workflow">
+                </form>
+              </p>
+            </div>
+        </div>
+        {% endfor %}
+        <button class="btn btn-primary btn-user btn-block formEdit" data-toggle="modal" data-target="#addEducation">Add New</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--End WorkFLow Model-->
 {% endblock content %}
 {% block custom_script %}
 jQuery.noConflict();
@@ -492,7 +721,7 @@ jQuery("#changeProfile").hover(
 );
 jQuery(".formEdit").click(
   function(){
-    jQuery(".close").trigger("click");
+    jQuery(".close-btn").trigger("click");
   }
 );
 jQuery(".cross").hover(

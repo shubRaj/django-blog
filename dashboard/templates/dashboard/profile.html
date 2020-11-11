@@ -121,7 +121,6 @@
                   <p class="mb-0">{{user.profile.bio}}</p>
                 </div>
               </div>
-              {% if user.profile_workflow.all %}
               <div class="row">
                 {% for skill in user.profile_skill.all %}
                 <div class="col-xl-3 col-md-6 mb-4">
@@ -140,7 +139,6 @@
                 </div>
                 {% endfor %}
               </div>
-          {% endif  %}
             </div>
             
           </div>

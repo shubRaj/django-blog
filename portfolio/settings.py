@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'resume.apps.ResumeConfig',
     "dashboard.apps.DashboardConfig",
     "blog.apps.BlogConfig",
-    "widget_tweaks"
+    "widget_tweaks",
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'portfolio.urls'
@@ -121,7 +123,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-
+INTERNAL_IPS = ["127.0.0.1",]
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 LOGIN_REDIRECT_URL = "/"
