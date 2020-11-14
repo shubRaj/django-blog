@@ -418,6 +418,21 @@
                     </form>
                   </span>
               </li>
+              {% elif social.platform == "youtube" %}
+                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                  <h6 class="mb-0">
+                    <svg class="youtube" fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M10,16.5V7.5L16,12M20,4.4C19.4,4.2 15.7,4 12,4C8.3,4 4.6,4.19 4,4.38C2.44,4.9 2,8.4 2,12C2,15.59 2.44,19.1 4,19.61C4.6,19.81 8.3,20 12,20C15.7,20 19.4,19.81 20,19.61C21.56,19.1 22,15.59 22,12C22,8.4 21.56,4.91 20,4.4Z" /></svg>
+                    {{social.platform|title}}</h6>
+                  <span class="text-secondary cross">{{social.url}}
+                    <i class="fa fa-times d-none" aria-hidden="true"></i>
+                    <form method="post" class="deleteForm" action="{% url 'app_dashboard:dashboard_home'%}">
+                      {% csrf_token %}
+                      <input type="hidden" name="pk" value="{{social.id}}">
+                      <input type="hidden" name="action" value="social">
+                    <button type="submit" value="DELETE" class="d-none delete">Delete</button>
+                    </form>
+                  </span>
+              </li>
               {% endif %}
           {% endfor %}
           <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
@@ -628,11 +643,21 @@
             <div class="card border-left-warning shadow h-100 py-2">
               <div class="card-body">
                 <div class="row no-gutters align-items-center">
+
                   <div class="col mr-2">
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{skill.language_tool}}</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{skill.language_tool}}
+                    </div>
                   </div>
                   <div class="col-auto">
-                    <i class="fab fa-{{skill.language_tool | lower}} fa-2x text-gray-800"></i>
+                    <i class="fab fa-{{skill.language_tool | lower}} fa-2x text-gray-800 cross">
+                      <span class="fa-times d-none" aria-hidden="true">×</span>
+                      <form method="post" class="deleteForm" action="{% url 'app_dashboard:dashboard_home'%}">
+                        {% csrf_token %}
+                        <input type="hidden" name="pk" value="{{skill.id}}">
+                        <input type="hidden" name="action" value="skill">
+                      <button type="submit" value="DELETE" class="d-none delete">Delete</button>
+                      </form>
+                    </i>
                   </div>
                 </div>
               </div>
@@ -683,12 +708,12 @@
         {% for workflow in user.profile_workflow.all %}
         <div class="card shadow mb-4">
             {% csrf_token %}
-            <div class="card-body">
-              <p class="mb-0">{{workflow.workflow}}
+            <div class="card-header py-3">
+              <p class="mx-auto  text-dark">{{workflow.workflow}}
                 <form method="post" action="{% url 'app_dashboard:dashboard_home' %}">
                   {% csrf_token %}
                   <button  type="submit" class="close" value="DELETE">
-                    <span aria-hidden="true" >×</span>
+                    <span aria-hidden="true">×</span>
                   </button>
                   <input type="hidden" name="pk" value="{{workflow.id}}">
                   <input type="hidden" name="action" value="workflow">
@@ -697,13 +722,94 @@
             </div>
         </div>
         {% endfor %}
-        <button class="btn btn-primary btn-user btn-block formEdit" data-toggle="modal" data-target="#addEducation">Add New</button>
+        <button class="btn btn-primary btn-user btn-block formEdit" data-toggle="modal" data-target="#addWorkFlow">Add New</button>
       </div>
     </div>
   </div>
 </div>
 
 <!--End WorkFLow Model-->
+<!--Add WorkFlow-->
+<div class="modal fade" id="addWorkFlow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Your Information</h5>
+        <button class="close close-btn" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form method="post" action="{% url 'app_dashboard:dashboard_home' %}" >
+            {% csrf_token %}
+            <div class="form-group">
+              {% render_field workFlow.workflow  class="form-control form-control-user" placeholder="WorkFlow"%}
+            </div>
+            <button type="submit" class="btn btn-primary btn-user btn-block">Add</button>
+          </form>  
+      </div>
+    </div>
+  </div>
+</div>
+<!--End WorkFlow-->
+<!--Add Interest Model -->
+<div class="modal fade" id="interestModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Your Information</h5>
+        <button class="close close-btn" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {% for interest in user.profile_interest.all %}
+        <div class="card shadow mb-4">
+            {% csrf_token %}
+            <div class="card-header py-3">
+              <p class="mx-auto  text-dark">{{interest.description}}
+                <form method="post" action="{% url 'app_dashboard:dashboard_home' %}">
+                  {% csrf_token %}
+                  <button  type="submit" class="close" value="DELETE">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                  <input type="hidden" name="pk" value="{{interest.id}}">
+                  <input type="hidden" name="action" value="interest">
+                </form>
+              </p>
+            </div>
+        </div>
+        {% endfor %}
+        <button class="btn btn-primary btn-user btn-block formEdit" data-toggle="modal" data-target="#addInterest">Add New</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--End Interest Model-->
+<!--Add Interest -->
+<div class="modal fade" id="addInterest" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Your Information</h5>
+        <button class="close close-btn" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form method="post" action="{% url 'app_dashboard:dashboard_home' %}" >
+            {% csrf_token %}
+            <div class="form-group">
+              {% render_field interestForm.description  class="form-control form-control-user" placeholder="interest"%}
+            </div>
+            <button type="submit" class="btn btn-primary btn-user btn-block">Add</button>
+          </form>  
+      </div>
+    </div>
+  </div>
+</div>
+<!--End Interst-->
 {% endblock content %}
 {% block custom_script %}
 jQuery.noConflict();
@@ -726,11 +832,12 @@ jQuery(".formEdit").click(
 );
 jQuery(".cross").hover(
   function(){
-  jQuery(this).children().toggleClass("d-none")
-})
+  jQuery(this).children().toggleClass("d-none");
+  jQuery(this).children().css("cursor","pointer");
+});
 jQuery(".fa-times").click(
   function(){
     jQuery(this).parent().find("button").trigger("click")
   }
-)
+);
 {% endblock custom_script %}

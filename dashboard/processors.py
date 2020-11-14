@@ -7,7 +7,7 @@ def updateForms(request):
         "educationForm":EducationUpdateForm(),
         "skillForm":SkillUpdateForm(),
         "workFlow":WorkFlowUpdateForm(),
-        "interestFlow":InterestUpdateForm(),
+        "interestForm":InterestUpdateForm(),
         "userForm":UserUpdateForm(instance=request.user),}
     else:
         context={}

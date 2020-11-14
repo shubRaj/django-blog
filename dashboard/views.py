@@ -9,10 +9,11 @@ from django.urls import reverse,reverse_lazy
 from django.http import HttpResponseRedirect
 from .forms import UserRegistrationForm
 import random
-from resume.models import (SocialMedia,Experience,Education,WorkFlow)
+from resume.models import (SocialMedia,Experience,Education,WorkFlow,Skill,Interest)
 from resume.forms import (UserUpdateForm,ProfileUpdateForm,
-SocialMediaUpdateForm,ExperienceUpdateForm,EducationUpdateForm,SkillUpdateForm)
-class DashboardHomeView(LoginRequiredMixin,View):
+SocialMediaUpdateForm,ExperienceUpdateForm,EducationUpdateForm,SkillUpdateForm,WorkFlowUpdateForm,
+InterestUpdateForm)
+class DashboardHomeView(LoginRequiredMixin,UserPassesTestMixin,View):
     template_name="dashboard/home.html"
     def get(self,request):
         return render(request,"dashboard/home.html")
@@ -20,15 +21,26 @@ class DashboardHomeView(LoginRequiredMixin,View):
         action = request.POST.get("action",None)
         id = request.POST.get("pk",None)
         if action:
-            if action=="social":
-                SocialMedia.objects.get(id=id).delete()
-            elif action=="experience":
-                Experience.objects.get(id=id).delete()
-            elif action=="education":
-                Education.objects.get(id=id).delete()
-            elif action == "workflow":
-                WorkFlow.objects.get(id=id).delete()
-            messages.success(request,"Deletion Successful",fail_silently=True)
+            try:
+                if action=="social":
+                    SocialMedia.objects.get(id=id).delete()
+                elif action=="experience":
+                    Experience.objects.get(id=id).delete()
+                elif action=="education":
+                    Education.objects.get(id=id).delete()
+                elif action == "workflow":
+                    WorkFlow.objects.get(id=id).delete()
+                elif action == "skill":
+                    Skill.objects.get(id=id).delete()
+                elif action == "interest":
+                    Interest.objects.get(id=id).delete()
+                else:
+                    messages.warning(request,"Deletion unsuccessful",fail_silently=True)
+                    return HttpResponseRedirect(reverse("app_dashboard:dashboard_home"))
+                messages.success(request,"Deletion Successful",fail_silently=True)
+            except:
+                messages.warning(request,"Deletion unsuccessful",fail_silently=True)
+                return HttpResponseRedirect(reverse("app_dashboard:dashboard_home"))
         else:
             profile_form = ProfileUpdateForm(request.POST,request.FILES,instance=request.user.profile)
             user_form = UserUpdateForm(request.POST,instance=request.user)
@@ -36,6 +48,8 @@ class DashboardHomeView(LoginRequiredMixin,View):
             experience_form = ExperienceUpdateForm(request.POST)
             education_form = EducationUpdateForm(request.POST)
             skill_form = SkillUpdateForm(request.POST)
+            workflow_form = WorkFlowUpdateForm(request.POST)
+            interest_form = InterestUpdateForm(request.POST)
             if user_form.is_valid() and profile_form.is_valid():
                 user_form.save()
                 profile_form.save()
@@ -59,6 +73,16 @@ class DashboardHomeView(LoginRequiredMixin,View):
                 skill = skill_form.save(commit=False)
                 skill.user = request.user
                 skill.save()
+                messages.success(request,f"Added Successfully ",fail_silently=True)
+            elif workflow_form.is_valid():
+                workflow = workflow_form.save(commit=False)
+                workflow.user = request.user
+                workflow.save()
+                messages.success(request,f"Added Successfully ",fail_silently=True)
+            elif interest_form.is_valid():
+                interest = interest_form.save(commit=False)
+                interest.user = request.user
+                interest.save()
                 messages.success(request,f"Added Successfully ",fail_silently=True)
             elif len(messages.get_messages(request))==0:
                 messages.warning(request,f"Error Occured Try Again",fail_silently=True)
