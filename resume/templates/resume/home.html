@@ -24,6 +24,8 @@
                 {% for social in whois.profile_social.all %}
                     {% if social.platform == "website" %}
                     <a class="social-icon" href="{{social.url}}" target="_blank"><i class="fas fa-globe"></i></a>
+                    {% elif social.platform == "youtube" %}
+                    <a class="social-icon" href="https://{{social.platform}}.com/channel/{{social.url}}" target="_blank"><i class="fab fa-{{social.platform}}"></i></a>
                     {% else %}
                     <a class="social-icon" href="https://{{social.platform}}.com/{{social.url}}" target="_blank"><i class="fab fa-{{social.platform}}"></i></a>
                     {% endif %}

@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.views import LoginView,LogoutView
 from django.views.generic import (CreateView,View,UpdateView,DeleteView)
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate,login,models
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin,UserPassesTestMixin
@@ -9,38 +9,65 @@ from django.urls import reverse,reverse_lazy
 from django.http import HttpResponseRedirect
 from .forms import UserRegistrationForm
 import random
+from blog.models import BlogPost
+from django.core.paginator import Paginator
 from resume.models import (SocialMedia,Experience,Education,WorkFlow,Skill,Interest)
 from resume.forms import (UserUpdateForm,ProfileUpdateForm,
 SocialMediaUpdateForm,ExperienceUpdateForm,EducationUpdateForm,SkillUpdateForm,WorkFlowUpdateForm,
 InterestUpdateForm)
-class DashboardHomeView(LoginRequiredMixin,UserPassesTestMixin,View):
+class DashboardHomeView(LoginRequiredMixin,View):
     template_name="dashboard/home.html"
     def get(self,request):
-        return render(request,"dashboard/home.html")
+        return render(request,"dashboard/home.html",)
     def post(self,request):
         action = request.POST.get("action",None)
         id = request.POST.get("pk",None)
+        user = request.user
         if action:
             try:
                 if action=="social":
-                    SocialMedia.objects.get(id=id).delete()
+                    social = SocialMedia.objects.get(id=id)
+                    if user == social.user:
+                        social.delete()
+                    else:
+                        messages.warning(request,"Unauthorized Action",fail_silently=True)
                 elif action=="experience":
-                    Experience.objects.get(id=id).delete()
+                    experience = Experience.objects.get(id=id)
+                    if user == experience.user:
+                        experience.user
+                    else:
+                        messages.warning(request,"Unauthorized Action",fail_silently=True)
                 elif action=="education":
-                    Education.objects.get(id=id).delete()
+                    education = Education.objects.get(id=id)
+                    if user == education.user:
+                        education.delete()
+                    else:
+                        messages.warning(request,"Unauthorized Action",fail_silently=True)
                 elif action == "workflow":
-                    WorkFlow.objects.get(id=id).delete()
+                    workflow = WorkFlow.objects.get(id=id)
+                    if user == workflow.user:
+                        workflow.delete()
+                    else:
+                        messages.warning(request,"Unauthorized Action",fail_silently=True)
                 elif action == "skill":
-                    Skill.objects.get(id=id).delete()
+                    skill = Skill.objects.get(id=id)
+                    if user == skill.user:
+                        skill.delete()
+                    else:
+                        messages.warning(request,"Unauthorized Action",fail_silently=True)
                 elif action == "interest":
-                    Interest.objects.get(id=id).delete()
+                    interest = Interest.objects.get(id=id)
+                    if user == interest.user:
+                        interest.get(id=id).delete()
+                    else:
+                        messages.warning(request,"Unauthorized Action",fail_silently=True)
                 else:
                     messages.warning(request,"Deletion unsuccessful",fail_silently=True)
                     return HttpResponseRedirect(reverse("app_dashboard:dashboard_home"))
-                messages.success(request,"Deletion Successful",fail_silently=True)
+                if len(messages.get_messages(request))==0:
+                    messages.success(request,"Deletion Successful",fail_silently=True)
             except:
                 messages.warning(request,"Deletion unsuccessful",fail_silently=True)
-                return HttpResponseRedirect(reverse("app_dashboard:dashboard_home"))
         else:
             profile_form = ProfileUpdateForm(request.POST,request.FILES,instance=request.user.profile)
             user_form = UserUpdateForm(request.POST,instance=request.user)
@@ -87,6 +114,47 @@ class DashboardHomeView(LoginRequiredMixin,UserPassesTestMixin,View):
             elif len(messages.get_messages(request))==0:
                 messages.warning(request,f"Error Occured Try Again",fail_silently=True)
         return HttpResponseRedirect(reverse("app_dashboard:dashboard_home"))
+class DashboardBlogs(LoginRequiredMixin,View):
+    def get(self,request):
+        blogs = request.user.author_blog.all()
+        paginator = Paginator(blogs,5)
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+        context = {
+            "blogs":page_obj,
+        }
+        return render(request,"dashboard/list_blog.html",context)
+    def post(self,request):
+        blogs = BlogPost.objects.filter(title__contains=request.POST.get("query"))
+        paginator = Paginator(blogs,5)
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+        context = {
+            "blogs":page_obj,
+        }
+        return render(request,"dashboard/list_blog.html",context)
+class DashboardBlogUpdate(LoginRequiredMixin,UserPassesTestMixin,SuccessMessageMixin,UpdateView):
+    model = BlogPost
+    fields = ["title","thumbnail","description",]
+    template_name = "dashboard/detail_blog.html"
+    def test_func(self):
+        return self.get_object().author == self.request.user
+    def handle_no_permission(self):
+        messages.warning(self.request,"You're Unauthorized")
+        return HttpResponseRedirect(reverse("app_dashboard:dashboard_home"))
+    def get_success_message(self,cleaned_data):
+        self.success_message = f"{self.get_object().title} has been modified"
+        return super().get_success_message(cleaned_data)
+class DashboardBlogAdd(LoginRequiredMixin,SuccessMessageMixin,CreateView):
+    model = BlogPost
+    fields = ["title","thumbnail","description",]
+    template_name = "dashboard/add_blog.html"
+    def form_valid(self,form):
+        form.instance.author = self.request.user
+        return super(DashboardBlogAdd,self).form_valid(form)
+    def get_success_message(self,cleaned_data):
+        self.success_message = f"{cleaned_data.get('title')} has been added"
+        return super().get_success_message(cleaned_data)
 class DashboardLoginView(UserPassesTestMixin,SuccessMessageMixin,LoginView):
     template_name = "dashboard/login.html"
     success_login_messages=["Welcome back! %s .This place hasn't been the same without you",

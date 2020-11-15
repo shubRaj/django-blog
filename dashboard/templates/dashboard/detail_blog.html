@@ -1,0 +1,30 @@
+{% extends 'dashboard/home.html' %}
+{% load widget_tweaks %}
+{% block dashboard_heading %}
+    Update Blog
+{% endblock dashboard_heading %}
+{% block dashboard_content %}
+<form class="user" enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    <input type="file" name="resume_pic" id="chooseImage" style="display:none;">
+    <div class="form-group">
+      {% render_field form.title class="form-control form-control-user" placeholder="Title" %}
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+            </div>
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="inputGroupFile01"
+                aria-describedby="inputGroupFileAddon01" name="thumbnail">
+              <label class="custom-file-label" for="inputGroupFile01">Thumbnail</label>
+            </div>
+          </div>          
+      </div>
+    <div class="form-group">
+      {% render_field form.description class="form-control" id="exampleFormControlTextarea1" placeholder="Description..." %}
+    </div>
+    <button type="submit" class="btn btn-primary btn-user btn-block">Update Now</button>
+  </form>
+{% endblock dashboard_content %}

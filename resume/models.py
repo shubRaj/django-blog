@@ -81,7 +81,7 @@ class AbsModel(models.Model):
     start_date = models.DateField(null=True)
     end_date = models.DateField(null=True,blank=True)
     class Meta:
-        ordering=["-start_date"]
+        ordering=["-start_date",]
         abstract=True
 class Experience(AbsModel):
     user = user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="profile_experience")
@@ -98,3 +98,5 @@ class WorkFlow(models.Model):
 class Interest(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="profile_interest")
     description = AbsModel._meta.get_field("description") #gets description field from AbsModel
+class profile_log(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="profile_log")
