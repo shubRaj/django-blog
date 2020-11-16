@@ -1,0 +1,35 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+<style>
+    .card:hover{
+      transform: scale(1.05);
+   box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);  cursor: pointer;}
+ </style>
+<div class="container">
+    <div class="row">
+        {% for blog in blogs %}
+        <div class="col-sm-6 mt-4 {{blog.slug}}">
+            <div class="card">
+                <img class="card-img-top img-thumbnail" src="{{blog.thumbnail.url}}" alt="{{blog.title}}">
+                <img src="{{blog.author.profile.profile_pic.url}}" class="rounded-circle mx-auto" title="Author: {{blog.author.get_full_name}}" alt="{{blog.author.get_full_name}}">
+                <div class="card-body">
+                <h4 class="card-title text-center text-primary">{{blog.title}}</h4>
+                <p class="card-text">{{blog.description|truncatechars:200}}</p>
+            </div>
+                <div class="card-footer">
+                    <small class="text-muted">Last updated {{blog.updated_on|timesince}} ago</small>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(".{{blog.slug}}").click(
+                function(){
+                    window.location = "{{blog.slug}}"
+                }
+            )
+        </script>
+        {% endfor %}
+    </div>
+    {% include 'dashboard/paginator.html' with blogs=blogs Qparam=request.GET.query  only %}
+</div>
+{% endblock content %}

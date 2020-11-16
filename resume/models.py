@@ -98,5 +98,3 @@ class WorkFlow(models.Model):
 class Interest(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="profile_interest")
     description = AbsModel._meta.get_field("description") #gets description field from AbsModel
-class profile_log(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="profile_log")

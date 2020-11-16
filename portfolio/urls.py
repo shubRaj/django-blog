@@ -21,6 +21,7 @@ import debug_toolbar
 urlpatterns = [
     path('logmein/', admin.site.urls),
     path("dashboard/",include("dashboard.urls",namespace="dashboard")),
+    path("blogs/",include("blog.urls",namespace="blog")),
     path("",include('resume.urls',namespace="resume")),
 ]
 if settings.DEBUG:

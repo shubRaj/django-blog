@@ -13,23 +13,5 @@ Blogs
     </div>
 </div>
 {% endfor %}
-<nav aria-label="Page navigation example">
-    <ul class="pagination">
-        {% if blogs.has_previous %}
-        <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{blogs.previous_page_number}}">Previous</a></li>
-        {% endif %}
-        {% for page_num in blogs.paginator.page_range %}
-            {% if page_num == blogs.number  %}
-                <li class="page-item active"><a class="page-link" href="">{{page_num}}</a></li>
-            {% elif page_num > blogs.number|add:"-2" and page_num < blogs.number|add:"2" %}
-                <li class="page-item"><a class="page-link" href="?page={{page_num}}">{{page_num}}</a></li>
-            {% endif %}
-        {% endfor %}
-        {% if blogs.has_next %}
-            <li class="page-item"><a class="page-link" href="?page={{blogs.next_page_number}}">Next</a></li>
-            <li class="page-item"><a class="page-link" href="?page={{blogs.paginator.num_pages}}">Last</a></li>
-        {% endif %}
-    </ul>
-  </nav>
+{% include "dashboard/paginator.html" with blogs=blogs only %}
 {% endblock dashboard_content %}
