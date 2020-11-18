@@ -39,6 +39,7 @@
                     {% if whois.profile_interest.all %}
                         <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#interests">Interests</a></li>
                     {% endif %}
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{% url 'app_blog:blog_lists' %}?query={{whois.username}}">Blogs</a></li>
                     <!-- <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#awards">Awards</a></li> -->
                 </ul>
             </div>

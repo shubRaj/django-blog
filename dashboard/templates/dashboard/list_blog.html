@@ -1,17 +1,32 @@
 {% extends 'dashboard/home.html' %}
+{% load static %}
 {% block dashboard_heading %}
 Blogs
 {% endblock dashboard_heading %}
 {% block dashboard_content %}
+<style>
+  .card:hover{
+    transform: scale(1.05);
+ box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);  cursor: pointer;}
+</style>
+<script src="{% static 'dashboard/vendor/jquery/jquery.min.js' %}"></script>
 {% for blog in blogs %}
-<div class="card shadow mb-2">
+<div class="card shadow mb-2 {{blog.slug}}">
     <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary"><a href="{% url 'app_dashboard:dashboard_blog_update' blog.slug %}">{{blog.title}}</a></h6>
+      <h6 class="m-0 font-weight-bold text-primary">{{blog.title}}</h6>
     </div>
     <div class="card-body">
     {{blog.description|truncatewords:30}}
     </div>
 </div>
+<script>
+  jQuery.noConflict;
+  jQuery(".{{blog.slug}}").click(
+    function(){
+      window.location = "{% url 'app_dashboard:dashboard_blog_update' blog.slug %}"
+    }
+  );
+</script>
 {% endfor %}
 {% include "dashboard/paginator.html" with blogs=blogs only %}
 {% endblock dashboard_content %}

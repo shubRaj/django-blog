@@ -1,0 +1,12 @@
+{% extends 'handlerBase.html' %}
+{% block title %}
+    500 - Internal Server Error
+{% endblock title %}
+{% block content %}
+    <div class="error__title">500</div>
+    <div class="error__subtitle">Don't roam around the space</div>
+    <div class="error__description">Get Back To Ship</div>
+    <button class="error__button" >
+        <a href="{% url 'app_blog:blog_lists' %}"><i class="fa fa-space-shuttle fa-2x"></i></a>
+    </button>
+{% endblock content %}

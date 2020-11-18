@@ -13,9 +13,9 @@
                 <img class="card-img-top img-thumbnail" src="{{blog.thumbnail.url}}" alt="{{blog.title}}">
                 <img src="{{blog.author.profile.profile_pic.url}}" class="rounded-circle mx-auto" title="Author: {{blog.author.get_full_name}}" alt="{{blog.author.get_full_name}}">
                 <div class="card-body">
-                <h4 class="card-title text-center text-primary">{{blog.title}}</h4>
-                <p class="card-text">{{blog.description|truncatechars:200}}</p>
-            </div>
+                    <h4 class="card-title text-center text-primary">{{blog.title}}</h4>
+                    <p class="card-text">{{blog.description|truncatechars:200}}</p>
+                </div>
                 <div class="card-footer">
                     <small class="text-muted">Last updated {{blog.updated_on|timesince}} ago</small>
                 </div>
@@ -28,8 +28,14 @@
                 }
             )
         </script>
+        {% empty %}
+                <div class="card m-4 text-center mx-auto">
+                    <div class="card-header text-dark">
+                        No Result Found
+                    </div>
+                </div>
         {% endfor %}
     </div>
-    {% include 'dashboard/paginator.html' with blogs=blogs Qparam=request.GET.query  only %}
+    {% include 'dashboard/paginator.html' with blogs=blogs Qparam=request.GET.query  Uparam=request.GET.username only %}
 </div>
 {% endblock content %}

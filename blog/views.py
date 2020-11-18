@@ -5,22 +5,24 @@ from .models import BlogPost,Comment
 from .forms import CommentForm
 from django.contrib import messages
 import copy
+from django.contrib.auth.models import User
 from django.urls import reverse
 from django.http import HttpResponseRedirect,Http404
+from django.conf import settings
 # Create your views here.
 class BlogsList(View):
     def get(self,request):
         if request.GET.get("query"):
-            blogs = BlogPost.objects.filter(title__contains=request.GET.get("query"))
+            blogs = BlogPost.objects.filter(title__contains=request.GET.get("query"))|BlogPost.objects.filter(author__username=request.GET.get("query"))
         else:
             blogs = BlogPost.objects.all()
-        paginator = Paginator(blogs,8)
-        page_number = request.GET.get("page")
-        blogs = paginator.get_page(page_number)
+        if blogs:
+            paginator = Paginator(blogs,8)
+            page_number = request.GET.get("page")
+            blogs = paginator.get_page(page_number)
         context = {
             "blogs":blogs,
         }
-
         return render(request,"blog/home.html",context)
 class BlogDetail(DetailView):
     model = BlogPost
@@ -35,6 +37,7 @@ class BlogDetail(DetailView):
             comment_form = CommentForm(request_GET_copy)
             if comment_form.is_valid():
                 comment_form.save()
+                messages.success(self.request,"Comment Added Successfully",fail_silently=True)
                 return HttpResponseRedirect(reverse("app_blog:blog_detail",args=(self.get_object().slug,)))
         return super().get(request,*args,**kwargs)
     def get_context_data(self, **kwargs):
