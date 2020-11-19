@@ -117,21 +117,31 @@ class DashboardHomeView(LoginRequiredMixin,View):
 class DashboardBlogs(LoginRequiredMixin,View):
     def get(self,request):
         blogs = request.user.author_blog.all()
-        paginator = Paginator(blogs,5)
-        page_number = request.GET.get("page")
-        page_obj = paginator.get_page(page_number)
-        context = {
-            "blogs":page_obj,
-        }
+        if blogs:
+            paginator = Paginator(blogs,5)
+            page_number = request.GET.get("page")
+            page_obj = paginator.get_page(page_number)
+            context = {
+                "blogs":page_obj,
+            }
+        else:
+            context={
+                "blogs":"",
+            }
         return render(request,"dashboard/list_blog.html",context)
     def post(self,request):
         blogs = BlogPost.objects.filter(title__contains=request.POST.get("query"))
-        paginator = Paginator(blogs,5)
-        page_number = request.GET.get("page")
-        page_obj = paginator.get_page(page_number)
-        context = {
-            "blogs":page_obj,
-        }
+        if blogs:
+            paginator = Paginator(blogs,5)
+            page_number = request.GET.get("page")
+            page_obj = paginator.get_page(page_number)
+            context = {
+                "blogs":page_obj,
+            }
+        else:
+            context={
+                "blogs":"",
+            }
         return render(request,"dashboard/list_blog.html",context)
 class DashboardBlogUpdate(LoginRequiredMixin,UserPassesTestMixin,SuccessMessageMixin,UpdateView):
     model = BlogPost
