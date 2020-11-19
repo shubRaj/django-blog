@@ -129,6 +129,7 @@ if DEBUG:
     MEDIA_URL = 'media'
     MEDIA_ROOT = BASE_DIR/"media"
     MEDIA_URL = '/media/'
+    STATIC_ROOT = BASE_DIR/"staticfiles"
 else:
     STATIC_URL = 'http://localhost/assets/'
     MEDIA_URL = 'http://localhost/media/'
