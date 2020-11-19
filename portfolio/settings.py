@@ -129,7 +129,7 @@ USE_TZ = True
 INTERNAL_IPS = ["127.0.0.1",]
 MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
-MEDIA_ROOT = BASE_DIR/"staticfiles"
+MEDIA_ROOT = BASE_DIR/"media"
 STATIC_ROOT = BASE_DIR/"staticfiles"
 STATICFILES_DIRS = [
 (BASE_DIR/"static_files"),
