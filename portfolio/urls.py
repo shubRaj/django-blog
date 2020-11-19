@@ -23,9 +23,9 @@ urlpatterns = [
     path("dashboard/",include("dashboard.urls",namespace="dashboard")),
     path("blogs/",include("blog.urls",namespace="blog")),
     path("",include('resume.urls',namespace="resume")),
-]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT),
+]
 if settings.DEBUG:
-    urlpatterns+=path("__debug__",include(debug_toolbar.urls))
+    urlpatterns+=path("__debug__",include(debug_toolbar.urls))+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 else:
     handler500 = 'portfolio.handlers.server_error'
     handler404 = 'portfolio.handlers.page_not_found'
