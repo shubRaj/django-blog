@@ -1,6 +1,0 @@
-export SECRET_KEY="czvwb4(reh7)fz(i*0li3wu)uptjwm5t&ylcvu5mp(4ysl9uQa"
-export DB_ENGINE="django.db.backends.postgresql_psycopg2"
-export DB_HOST="john.db.elephantsql.com"
-export DB_NAME="evbylgmx"
-export DB_PASSWORD="z6mmQM4gUFC4L4jV8zUjqwJ3ky-q7yQK"
-export DB_PORT="5432"

@@ -127,18 +127,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 INTERNAL_IPS = ["127.0.0.1",]
-if DEBUG:
-    STATIC_URL = '/static/'
-    MEDIA_URL = 'media'
-    MEDIA_ROOT = BASE_DIR/"media"
-    MEDIA_URL = '/media/'
-    STATIC_ROOT = BASE_DIR/"staticfiles"
-else:
-    STATIC_URL = 'http://localhost/assets/'
-    MEDIA_URL = 'http://localhost/media/'
-    STATIC_ROOT = '/var/www/html/assets/'
+MEDIA_URL = '/media/'
+STATIC_URL = '/static/'
+MEDIA_ROOT = BASE_DIR/"staticfiles"
+STATIC_ROOT = BASE_DIR/"staticfiles"
 STATICFILES_DIRS = [
-    (BASE_DIR/"static_files"),
+(BASE_DIR/"static_files"),
 ]
 LOGIN_REDIRECT_URL = "/"
 LOGIN_URL = "app_dashboard:dashboard_login"
