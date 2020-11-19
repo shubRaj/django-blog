@@ -9,7 +9,7 @@ urlpatterns = [
     path("logout/",views.DashboardLogoutView.as_view(),name="dashboard_logout"),
     path("profile/",login_required(TemplateView.as_view(template_name="dashboard/profile.html")),name="dashboard_profile"),
     path("blogs/",views.DashboardBlogs.as_view(),name="dashboard_blogs"),
-    path("update/<slug:slug>/",views.DashboardBlogUpdate.as_view(),name="dashboard_blog_update"),
+    path("update/<int:pk>/",views.DashboardBlogUpdate.as_view(),name="dashboard_blog_update"),
     path("blog/add/",views.DashboardBlogAdd.as_view(),name="dashboard_blog_add"),
     path("",views.DashboardHomeView.as_view(),name="dashboard_home"),
 ]

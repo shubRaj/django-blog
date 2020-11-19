@@ -679,13 +679,14 @@
                   </div>
                   <div class="col-auto">
                     <i class="fab fa-{{skill.language_tool | lower}} fa-2x text-gray-800 cross">
-                      <span class="fa-times d-none" aria-hidden="true">×</span>
+                      {% comment %}<span class="fa-times d-none" aria-hidden="true">×</span>
                       <form method="post" class="deleteForm" action="{% url 'app_dashboard:dashboard_home'%}">
                         {% csrf_token %}
                         <input type="hidden" name="pk" value="{{skill.id}}">
                         <input type="hidden" name="action" value="skill">
                       <button type="submit" value="DELETE" class="d-none delete">Delete</button>
                       </form>
+                      {% endcomment %}
                     </i>
                   </div>
                 </div>

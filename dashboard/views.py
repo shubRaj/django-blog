@@ -142,6 +142,8 @@ class DashboardBlogUpdate(LoginRequiredMixin,UserPassesTestMixin,SuccessMessageM
     def handle_no_permission(self):
         messages.warning(self.request,"You're Unauthorized")
         return HttpResponseRedirect(reverse("app_dashboard:dashboard_home"))
+    def form_valid(self,form):
+        return super(DashboardBlogUpdate,self).form_valid(form)
     def get_success_message(self,cleaned_data):
         self.success_message = f"{self.get_object().title} has been modified"
         return super().get_success_message(cleaned_data)

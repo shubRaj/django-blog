@@ -23,7 +23,7 @@ Blogs
   jQuery.noConflict;
   jQuery(".{{blog.slug}}").click(
     function(){
-      window.location = "{% url 'app_dashboard:dashboard_blog_update' blog.slug %}"
+      window.location = "{% url 'app_dashboard:dashboard_blog_update' blog.id %}"
     }
   );
 </script>
