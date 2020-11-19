@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from pathlib import Path
 import re
+from django.contrib import messages
 from PIL import Image
 def validate_num(value):
     num_pattern = re.compile(r"""
@@ -59,6 +60,9 @@ class Profile(models.Model):
             resize_image(self.resume_pic.path,(500,500))
         if not (self._meta.get_field("favicon").default in self.favicon.path):
             resize_image(self.favicon.path,(16,16))
+    def delete(self,*args,**kwargs):
+        if not User.objects.filter(id=self.user.id).exists():
+            super(Profile,self).delete(*args,**kwargs)
 class SocialMedia(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="profile_social")
     platform = models.CharField(choices=SOCIAL_MEDIA_CHOICES,max_length=9,default="facebook")

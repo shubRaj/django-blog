@@ -21,10 +21,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = [os.environ.get("HOSTS"),]
 
-
+if not DEBUG:
+    SECURE_SSL_REDIRECT=True
 # Application definition
 
 INSTALLED_APPS = [
